@@ -1,6 +1,6 @@
-version: '3'
+version: '2.1'
 services:
-  config-server:
+  config-service:
     build: config-service
     image: config-service
     environment:
@@ -8,3 +8,17 @@ services:
         -Dspring.profiles.active=native
     ports:
       - 8888:8888
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://config-service:8888/health"]
+
+  discovery-service:
+    build: discovery-service
+    image: discovery-service
+    depends_on:
+      config-service:
+        condition: service_healthy
+    ports:
+      - 8761:8761
+    environment:
+      JAVA_OPTS: >
+        -Dspring.cloud.config.uri=http://config-service:8888
