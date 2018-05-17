@@ -1,0 +1,10 @@
+version: '3'
+services:
+  config-server:
+    build: config-service
+    image: config-service
+    environment:
+      JAVA_OPTS: >
+        -Dspring.profiles.active=native
+    ports:
+      - 8888:8888
