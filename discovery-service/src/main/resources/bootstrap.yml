@@ -2,6 +2,10 @@ spring:
   application:
     name: discovery-service
 
+  cloud:
+    config:
+      fail-fast: true
+
 eureka:
   client:
     registerWithEureka: false

@@ -1,22 +1,19 @@
-version: '2.1'
+version: '3'
 services:
   config-service:
     build: config-service
     image: config-service
+    restart: unless-stopped
+    ports:
+      - 8888:8888
     environment:
       JAVA_OPTS: >
         -Dspring.profiles.active=native
-    ports:
-      - 8888:8888
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://config-service:8888/health"]
 
   discovery-service:
     build: discovery-service
     image: discovery-service
-    depends_on:
-      config-service:
-        condition: service_healthy
+    restart: unless-stopped
     ports:
       - 8761:8761
     environment:
